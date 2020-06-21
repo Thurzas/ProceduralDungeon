@@ -20,10 +20,10 @@ class RectangleNode
   }
   
     public boolean Contains(PVector item){
-      return (item.x > A.x-size.x &&
-              item.x < A.x+size.x&&
-              item.y > A.y - size.y &&
-              item.y < A.y + size.y
+      return (item.x >= A.x-size.x &&
+              item.x <= A.x+size.x&&
+              item.y >= A.y - size.y &&
+              item.y <= A.y + size.y
               );
   }
   

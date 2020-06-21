@@ -8,7 +8,8 @@ import processing.core.PVector;
 public class WorldGrid{
     public PVector size;
     public ArrayList<Cell> Nodes;    
-    
+    public boolean[][] visited;
+
     private static class XComparator implements Comparator<Cell> {
       /*public int compare(Object o1, Object o2) {
         return compare((PVector)o1,(PVector)o2);
@@ -25,26 +26,23 @@ public class WorldGrid{
         }
       }
     }
-    public WorldGrid(ArrayList<Cell> nodes, PVector size)
-    {
-        this.size = new PVector(size.x/Cell.CellSize, size.y/Cell.CellSize);
-        Nodes = nodes;
-        Collections.sort(Nodes, new XComparator());
-    }
     
     public WorldGrid( PVector size){
         this.size = new PVector((int)(size.x/Cell.CellSize), (int)(size.y/Cell.CellSize)); 
         Nodes = new ArrayList<Cell>();
-        
-        for(int i =0;i<size.x;i++){
-          for(int j =0;  j<size.y;j++)
+        System.out.println(size.x);
+        for(int i =0;i<this.size.x;i++){
+          for(int j =0;  j<this.size.y;j++)
             Nodes.add(new Cell(new PVector(i,j)));          
-        }     
+        }
+        visited = new boolean[(int)size.x][(int)size.y];
+        System.out.println(visited.length);
     }
     public void print(ArrayList<PVector> points, int value){
       for(PVector point : points){
-         Cell c = GetNode(point); 
-         c.Value=value;
+         Cell c = GetNode(point);
+         if(c!=null)
+           c.Value=value;
       }
     }
   

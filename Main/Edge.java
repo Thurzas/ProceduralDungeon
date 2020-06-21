@@ -91,6 +91,7 @@ public class Edge implements Comparable<Edge>{
                if(e<0)
                {
                 y1++;
+                points.add(new PVector(x1,y1));
                 e+=dx;
                }
                x1++;
@@ -108,6 +109,7 @@ public class Edge implements Comparable<Edge>{
                 if(e<0)
                 {
                  x1++;
+                 points.add(new PVector(x1,y1));
                  e+=dy;
                 }
                 y1++;
@@ -128,6 +130,7 @@ public class Edge implements Comparable<Edge>{
                if(e<0)
                {
                  y1--;
+                 points.add(new PVector(x1,y1));
                  e+=dx;
                }
                x1++;
@@ -145,6 +148,7 @@ public class Edge implements Comparable<Edge>{
                if(e>0)
                {
                  x1++; //diagonal
+                 points.add(new PVector(x1,y1));
                  e+=dy;
                }
                y1--;
@@ -179,6 +183,7 @@ public class Edge implements Comparable<Edge>{
                if(e>=0)
                {
                  y1++; //diagonal
+                 points.add(new PVector(x1,y1));
                  e+=dx;
                }
                x1--;
@@ -195,6 +200,7 @@ public class Edge implements Comparable<Edge>{
                if(e<=0)
                {
                  x1--;
+                 points.add(new PVector(x1,y1));
                  e+=dy;
                }
                y1++;
@@ -215,6 +221,7 @@ public class Edge implements Comparable<Edge>{
                if(e>=0)
                {
                  y1--; //diagonal
+                 points.add(new PVector(x1,y1));
                  e+=dx;
                }
                x1--;
@@ -231,6 +238,7 @@ public class Edge implements Comparable<Edge>{
                if(e>=0)
                {
                  x1--;
+                 points.add(new PVector(x1,y1));
                  e+=dy;
                }
                y1--;

@@ -11,6 +11,7 @@ float timer=0;
 boolean Init=false;
 boolean state=false;
 boolean Delaunay=false;
+boolean fillerInitied=false;
 int Step=0;
 PVector point= new PVector(5*width,5*height);
 boolean Span=false;
@@ -18,7 +19,15 @@ ArrayList edges = new ArrayList();
 Graph graph = new Graph();
 QuadTree tree = new QuadTree(new RectangleNode(new PVector(width/2,height/2),new PVector(width/2,height/2)),10);
 WorldGrid world;
+Room start;
+Room Boss;
+Filler fill = new Filler();
+int seed=1337;
 void setup() {
+  noiseDetail(20,0.6);
+  //noiseSeed(seed);
+  //fullScreen();
+  randomSeed(seed);
   size(1280,1024);
   //Init();
 }
@@ -47,6 +56,15 @@ public void Flocking()
     }
   }
 }
+  public void InitFiller(){
+    if(!fillerInitied)
+    {      
+      Edge e = (Edge)edges.get(0);      
+      PVector  p =new PVector((int)(e.p1.x/Cell.CellSize),(int)(e.p1.y/Cell.CellSize));
+      fill.Fill(world,p, 1);
+      fillerInitied=true;
+    }
+  }
 
 public void draw(){
   clear();
@@ -80,28 +98,68 @@ public void draw(){
     else{
       SetRoomCoordToInt();
       fillPoints();
-      Delaunay();
-      Span();
+      if(points.size()>3)
+      {
+        Delaunay();
+        Span();              
+        InitFiller();
+      }
+      else
+      {
+        reset();      
+        Init();
+      }
     }
     ShowStats();    
+    if(fill.queue.size()>0)
+    {      
+      for(int i = 0; i < 200; i++){
+        fill.Work(world);      
+      }
+    }
     printGrid();
   }
 }  
   
   public void printGrid(){     
-   stroke(0,0,255);
-   for(int i =0;i<world.Nodes.size();i++)
-   {
-     Cell c = (Cell)world.Nodes.get(i); 
-     if(c.Value==1)
-     {
+   stroke(0,0,0);
+   ArrayList<Cell> cells = world.GetNodeList();
+   //println(cells.size()); 13056 !
+   for(Cell c : cells)
+   {    
+     switch(c.Value){
+      case -1 :  
+        fill(155,155,155);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 1 :  
         fill(255,255,255);
         rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
-     }
-     else if(c.Value==2)
-     {
-        fill(0,0,255);
+      break;       
+      case 2 :  
+        fill(0,32,102);
         rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 3 :  
+        fill(0, 50, 156);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 4 :  
+        fill(0,70,222);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 5 :  
+        fill(255,0,0);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 6 :  
+        fill(0,255,0);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
+      case 7 :  
+        fill(255,255,0);
+        rect(c.CellPos.x*Cell.CellSize,c.CellPos.y*Cell.CellSize,Cell.CellSize,Cell.CellSize);
+      break;       
      }
    }
   }
@@ -138,7 +196,7 @@ public void draw(){
      graph=graph.SpanTree();
      
      //add randomly some edges to hide your span tree.
-     for(int i=0;i<edges.size()*0.17;i++)
+     for(int i=0;i<edges.size()*0.07;i++)
      {
        graph.addEdge((Edge)edges.get((int)random(edges.size())),true);
      }
@@ -289,19 +347,34 @@ private PVector GetRandomPointInCircle(float radius)
   return new PVector(radius * r * cos(t), radius* r*sin(t));
 }
 
+public void reset(){
+    world = new WorldGrid(new PVector(width,height));
+    rooms.clear();
+    Init=false;
+    point =new PVector(mouseX,mouseY);
+    Init();
+    Init=true;
+    Step=0;
+    points= new ArrayList<PVector>();
+    redraw();
+    Delaunay=false;
+    edges = new ArrayList<PVector>();
+    graph = new Graph();
+    Span=false;
+    fillerInitied=false;
+    fill = new Filler();   
+}
     
-void mouseClicked(){
-  rooms.clear();
-  Init=false;
-  point =new PVector(mouseX,mouseY);
-  Init();
-  Init=true;
-  Step=0;
-  points= new ArrayList<PVector>();
-  redraw();
-  Delaunay=false;
-  edges = new ArrayList<PVector>();
-  graph = new Graph();
-  Span=false;
+public void mouseClicked(){
+  if(mouseButton==LEFT)
+  {    
+    reset();
+  }
+  else if (mouseButton==RIGHT)
+  {
+    PVector p = new PVector((int)(mouseX/Cell.CellSize),(int)(mouseY/Cell.CellSize));
+    Cell c = world.GetNode(p);   
+    println(c.CellPos+ " "+c.Value +" "+ world.visited[(int)(p.x+p.y*world.size.y)]);
+  }
 }
     

@@ -29,6 +29,17 @@ class Room
     return res;
   }
  
+  public boolean Contains(PVector point){
+    boolean res= false;
+    if(A.x < point.x &&
+       A.x + B.x > point.x &&
+       A.y < point.y&&
+       A.y + B.y > point.y )
+    {
+      res=true;
+    }
+    return res;
+  }
   
   public void update(){
     Velocity.add(acceleration);

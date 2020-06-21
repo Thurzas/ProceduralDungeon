@@ -90,12 +90,10 @@ class Graph {
       {
          Edge e = (Edge)n.edges.get(i);
          if (e.p2==d) { 
-          System.out.println("The graph has an edge between "
-                             + s + " and " + d + "."); 
+          //System.out.println("The graph has an edge between " + s + " and " + d + "."); 
         } 
         else { 
-          System.out.println("The graph has no edge between "
-                             + s + " and " + d + "."); 
+        //  System.out.println("The graph has no edge between " + s + " and " + d + "."); 
         }  
       }
     } 
@@ -109,12 +107,10 @@ class Graph {
           Edge e2 = (Edge)n.edges.get(i);
           if (e2.equals(e)|| e2.GetOpposite().equals(e)) { 
             res=true;
-            System.out.println("The graph has an edge between "
-                             + e.p1 + " and " + e.p2 + "."); 
+            //System.out.println("The graph has an edge between " + e.p1 + " and " + e.p2 + "."); 
           } 
           else { 
-            System.out.println("The graph has no edge between "
-                             + e.p1 + " and " + e.p2 + "."); 
+            //System.out.println("The graph has no edge between " + e.p1 + " and " + e.p2 + "."); 
         }  
       }
       return res;
@@ -134,7 +130,7 @@ class Graph {
         res.addVertex(map.get(v).point);        
       }
       int i = 0;
-      while(res.getEdgesCount(true)< this.getVertexCount()-1)
+      while(res.getEdgesCount(true)< this.getVertexCount()-1 && i<edges.size())
       {
         Edge e = edges.get(i);        
         Node x=res.map.get(e.p1);
@@ -160,8 +156,8 @@ class Graph {
     {
        Node xRoot= Find(sub.map.get(x));
        Node yRoot = Find(sub.map.get(y));
-       System.out.print("Xroot before union :" +Find(sub.map.get(x)).toString()+ " "+ xRoot);
-       System.out.println(" Yroot before union :" +Find(sub.map.get(y)).toString()+ " "+ yRoot);
+       //System.out.print("Xroot before union :" +Find(sub.map.get(x)).toString()+ " "+ xRoot);
+       //System.out.println(" Yroot before union :" +Find(sub.map.get(y)).toString()+ " "+ yRoot);
        if(!xRoot.equals(yRoot))
        {
           if(xRoot.GetRank() < yRoot.GetRank())
