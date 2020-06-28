@@ -7,14 +7,16 @@ class Room
   boolean Collide;
   float maxspeed=40;
   float maxforce=0.1;
-  //float alignWeight= 0;
-  //float cohesionWeight=0;
-  //float separateWeight=50;
+  int lifespan;
+  float alignWeight= 1;
+  float cohesionWeight=1;
+  float separateWeight=2;
   public Room(PVector A, PVector B){
     this.A = A;
     this.B = B;
     this.Velocity = new PVector(0,0);
     this.acceleration = new PVector(0,0);
+    this.lifespan=50;
   }
 
   public boolean isCollide(Room other){
@@ -24,7 +26,8 @@ class Room
        A.y < other.A.y + other.B.y&&
        A.y + B.y > other.A.y )
     {
-      res=true;
+      lifespan--;
+      res=true;      
     }
     return res;
   }
@@ -45,7 +48,11 @@ class Room
     Velocity.add(acceleration);
     Velocity.limit(maxspeed);
     A.add(Velocity);
-    acceleration.mult(maxforce);
+    acceleration.mult(maxforce);      
+  }
+  public boolean isDead()
+  {
+    return lifespan <0;
   }
   
   public ArrayList<PVector> Fill(){
@@ -197,7 +204,7 @@ class Room
     PVector Align = Align(neighbors);
     PVector steer =seek(target);
     steer.mult(0.3);
-    Separation.mult(15);
+    Separation.mult(100);
     Align.mult(0.1);
     ApplyForce(steer);    
     ApplyForce(Separation);

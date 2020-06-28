@@ -14,6 +14,11 @@ class QuadTree
     this.components = new ArrayList<Room>();
     this.Divided=false;
   }
+  public ArrayList<Room> GetRooms() {
+      ArrayList<Room> rooms = new ArrayList<Room>();
+      query(boundary, rooms);
+      return rooms;
+    }
   
   public ArrayList<Room> query(RectangleNode range, ArrayList<Room> founds){
     if(founds==null)
@@ -31,10 +36,10 @@ class QuadTree
   }
   if(this.Divided)
    {
-    northWest.query(range, founds); 
-    southWest.query(range, founds); 
-    southEast.query(range, founds); 
-    southWest.query(range, founds); 
+    northWest.query(northWest.boundary, founds); 
+    southWest.query(southWest.boundary, founds); 
+    southEast.query(southEast.boundary, founds); 
+    northEast.query(northEast.boundary, founds); 
 
     //res.addAll(northWest.query(northWest.boundary)); 
     //res.addAll(southWest.query(southWest.boundary)); 

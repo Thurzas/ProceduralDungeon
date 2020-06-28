@@ -1,8 +1,8 @@
 import java.util.*; 
 
 float radius = 50;
-float mean=50;
-float deviation =10;
+float mean=60;
+float deviation =15;
 ArrayList<Room> rooms = new ArrayList();
 ArrayList<PVector> points = new ArrayList<PVector>();
 ArrayList<Triangle> triangles= new ArrayList<Triangle>();
@@ -52,7 +52,9 @@ public void Flocking()
     if(isCollide(room))
     {
         room.Flocking(tree,new PVector(width/2,height/2));
-        room.update();        
+        room.update();
+       /* if(room.isDead())
+          rooms.remove(i);*/
     }
   }
 }
@@ -198,7 +200,7 @@ public void draw(){
      //add randomly some edges to hide your span tree.
      for(int i=0;i<edges.size()*0.07;i++)
      {
-       graph.addEdge((Edge)edges.get((int)random(edges.size())),true);
+       graph.addEdge((Edge)edges.get((int)random(edges.size()/2)),true);
      }
     for (PVector v : graph.map.keySet())
     {     
